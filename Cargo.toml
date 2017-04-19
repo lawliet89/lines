@@ -1,0 +1,9 @@
+[package]
+name = "lines"
+version = "0.1.0"
+authors = ["Yong Wen Chua <me@yongwen.xyz>"]
+
+[dependencies]
+docopt = "0.7"
+pbr = "1.0.0"
+rustc-serialize = "0.3"
