@@ -36,7 +36,8 @@ fn main() {
     let args: Args = Docopt::new(USAGE)
         .and_then(|d| d.decode())
         .unwrap_or_else(|e| e.exit());
-    println!("{:?}", args);
+
+    println!("{} lines to {}", args.arg_count, args.arg_file);
 
     let payload = b"hi\n";
     let buffer: Vec<u8> = iter::repeat(payload)
@@ -44,7 +45,13 @@ fn main() {
         .cloned()
         .flat_map(|s| s.to_vec())
         .collect();
-    let iterations = args.arg_count % ITERATION_SIZE;
+
+    let iterations = args.arg_count / ITERATION_SIZE;
+    let iterations = if args.arg_count % ITERATION_SIZE > 0 {
+        iterations + 1
+    } else {
+        iterations
+    };
 
     let file = File::create(&args.arg_file).expect("Cannot create file");
     let mut writer = BufWriter::with_capacity(buffer.len(), file);
